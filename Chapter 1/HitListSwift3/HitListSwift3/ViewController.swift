@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         // sets up the Reuse Identifier normally done in the storyboard
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
-        
+        fetchData()
         
     }
 
@@ -85,6 +85,25 @@ class ViewController: UIViewController {
             people.append(person)
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    
+    func fetchData() {
+        
+        // get acces to the app delegate
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        // access context to peristent Container
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        // create a fetchRequest from the container using KVC
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Person")
+        
+        do {
+            self.people = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
 
