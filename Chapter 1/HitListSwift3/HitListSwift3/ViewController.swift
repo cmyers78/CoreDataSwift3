@@ -127,5 +127,18 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            self.people.remove(at: indexPath.row)
+            self.tableView.reloadData()
+            
+            // need to save the state to Core Data ---remove managed object...
+        }
+    }
+    
 }
 
